@@ -1,0 +1,24 @@
+{
+  "name": "node_socketio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/190256/node_socketio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/190256/node_socketio/issues"
+  },
+  "homepage": "https://github.com/190256/node_socketio#readme",
+  "dependencies": {
+    "config": "^3.3.3",
+    "express": "^4.17.1",
+    "socket.io": "^3.0.4"
+  }
+}
