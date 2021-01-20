@@ -1,47 +1,33 @@
-//初期設定
-$(() => {
-    //const url = 'http://localhost:3000';
-    const url = '';
-    const message = $('#message');
-    const myChatList = $('#myChatList');
-    const broadcastChatList = $('#broadcastChatList');
+//client.js
 
-    //サーバー接続
+const url = '';
+
+//HTMLが読まれてから実行: jQuery 独自
+//$(() => {
+$(function () {
+    //Socket.io 接続
     let socket = io.connect(url);
 
-    //接続
+    //接続が確立した
     socket.on('connect', () => {
-        console.log('connect');
+        console.log('connection');
         console.log(socket.id);
-        console.log(socket.connected);
-    });
+    })
 
-    //切断
-    socket.on('disconnect', (reason) => {
-        console.log('disconnect');
-    });
-
-    // server から client へ送信
+    //サーバから受信すると処理される
+    //server_to_client は自分で命名: サーバにあわせる
     socket.on('server_to_client', (data) => {
-        console.log('server_to_client');
-        let chatElement = $('<p>').append(data.message);
-        myChatList.prepend(chatElement);
+        console.log(data);
+        let p = $('<p>').html(data);
+        $('#message').append(p);
     });
 
-    // server から client へ broadcast で送信
-    socket.on('server_to_client_broadcast', (data) => {
-        console.log('server_to_client_broadcast');
-        let chatElement = $('<p>').append(data.message);
-        broadcastChatList.prepend(chatElement);
+    //id = send の Element（要素）がクリックされたら
+    //$('#send').on('click', () => {
+    $('#send').on('click', function (event) {
+        //クライアントからサーバにデータ送信
+        let message = 'こんにちわ';
+        //client_to_server は自分で命名: サーバにあわせる
+        socket.emit('client_to_sesrver', message);
     });
-
-    // send ボタンクリック
-    $('#send').on('click', () => {
-        if (!message.val()) return;
-        // server へ送信
-        socket.emit('client_to_server', {
-            message: message.val(),
-        });
-        message.val('');
-    });
-})
+});

@@ -1,22 +1,24 @@
 const express = require('express')
 const app = express()
-const http = require('http').createServer(app)
-const io = require('socket.io')(http)
-const config = require('config')
 
+const http = require('http').createServer(app)
+//Socket.io を準備
+const io = require('socket.io')(http)
+
+//public フォルダーのファイルのアクセスを許可する
 app.use(express.static(__dirname + '/public'))
 
+//クライアント接続処理
 io.on('connection', (socket) => {
-    // client からの受信
-    socket.on('client_to_server', (data) => {
+    console.log('connection');
+    
+    //クライアントからサーバに「client_to_server」で送信されたとき
+    socket.on('client_to_sesrver', (data) => {
         console.log(data);
-        // client へ送信
-        io.emit('server_to_client', data)
+        //すべてのクライアントにデータ送信
+        io.emit('server_to_client', data);
     })
-})
 
-const port = config.server.port
-const host = config.server.host
-http.listen(port, host, () => {
-    console.log(`listening on http://${host}:${port}`)
 })
+http.listen(3000);
+console.log('http://localhost:3000');
